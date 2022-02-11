@@ -9,11 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
+import javax.persistence.EntityNotFoundException;
 
 @RestController
 public class CourseController {
@@ -31,6 +29,23 @@ public class CourseController {
         } catch (NonUniqueCourseNumberException exception) {
             logger.error(exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("courses")
+    public ResponseEntity<Object> getCourses() {
+        return new ResponseEntity<>(courseService.getCourses(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("courses/{id}")
+    public ResponseEntity<Object> getCourse(@PathVariable Long id){
+        try {
+            Course course = courseService.getCourse(id);
+            return new ResponseEntity<>(course, HttpStatus.OK);
+        } catch (EntityNotFoundException exception){
+            logger.error(exception.getMessage());
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.OK);
         }
     }
 }

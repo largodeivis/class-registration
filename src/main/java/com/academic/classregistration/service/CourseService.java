@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -27,5 +29,27 @@ public class CourseService {
             throw new NonUniqueCourseNumberException(course.getCourseNumber());
         }
         return course;
+    }
+
+    public Course getCourse(Long id){
+        Optional<Course> course = courseRepository.findById(id);
+        if (course.isPresent()){
+            return course.get();
+        } else {
+            throw new EntityNotFoundException("Course with ID" + id +" not found.");
+        }
+    }
+
+    public Course getCourse(String courseNumber){
+        Optional<Course> course = courseRepository.findByCourseNumber(courseNumber);
+        if (course.isPresent()){
+            return course.get();
+        } else {
+            throw new EntityNotFoundException("Course with Course Number:" + courseNumber +" not found.");
+        }
+    }
+
+    public Iterable<Course> getCourses(){
+        return courseRepository.findAll();
     }
 }
