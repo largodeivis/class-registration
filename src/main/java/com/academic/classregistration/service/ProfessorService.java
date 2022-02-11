@@ -1,7 +1,6 @@
 package com.academic.classregistration.service;
 
 import com.academic.classregistration.jpa.ProfessorRepository;
-import com.academic.classregistration.model.Course;
 import com.academic.classregistration.model.Professor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,16 +20,17 @@ public class ProfessorService {
 
     public Professor createProfessor(Professor professor){
         professorRepository.save(professor);
+        logger.info("Successfully saved professor into DB: " + professor);
         return professor;
     }
 
     public Professor getProfessor(Long id) {
         Optional<Professor> professor = professorRepository.findById(id);
         if (professor.isPresent()) {
-            logger.info("Retrieved professor ID:" + id);
+            logger.info("Retrieved professor ID: " + id);
             return professor.get();
         } else {
-            String errorString = "professor with ID" + id + " not found.";
+            String errorString = "Professor with ID: " + id + " not found.";
             logger.error(errorString);
             throw new EntityNotFoundException(errorString);
         }

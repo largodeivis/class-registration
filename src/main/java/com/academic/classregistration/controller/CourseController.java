@@ -3,7 +3,7 @@ package com.academic.classregistration.controller;
 
 import com.academic.classregistration.exception.NonUniqueCourseNumberException;
 import com.academic.classregistration.model.Course;
-import com.academic.classregistration.model.ProfessorCourse;
+import com.academic.classregistration.model.ProfessorRequest;
 import com.academic.classregistration.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +50,8 @@ public class CourseController {
         }
     }
 
-    @PatchMapping("courses/{id}")
-    public ResponseEntity<Object> assignProfessor(@PathVariable Long id, @RequestBody ProfessorCourse professor){
+    @PatchMapping("courses/{id}/assign")
+    public ResponseEntity<Object> assignProfessor(@PathVariable Long id, @RequestBody ProfessorRequest professor){
         try {
             Course course = courseService.getCourse(id);
             Course updateCourse = courseService.assignProfessor(course, professor.getProfessorId());

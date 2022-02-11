@@ -4,7 +4,6 @@ import com.academic.classregistration.exception.NonUniqueCourseNumberException;
 import com.academic.classregistration.jpa.CourseRepository;
 import com.academic.classregistration.model.Course;
 import com.academic.classregistration.model.Professor;
-import com.academic.classregistration.model.ProfessorCourse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class CourseService {
             logger.info("Retrieved course ID:" + id);
             return course.get();
         } else {
-            String errorString = "Course with ID" + id +" not found.";
+            String errorString = "Course with ID: " + id +" not found.";
             logger.error(errorString);
             throw new EntityNotFoundException(errorString);
         }
@@ -51,7 +50,7 @@ public class CourseService {
     public Course getCourse(String courseNumber){
         Optional<Course> course = courseRepository.findByCourseNumber(courseNumber);
         if (course.isPresent()){
-            logger.info("Retrieved course with course Number:" + courseNumber);
+            logger.info("Retrieved course with Course Number:" + courseNumber);
             return course.get();
         } else {
             String errorString = "Course with Course Number:" + courseNumber +" not found.";
