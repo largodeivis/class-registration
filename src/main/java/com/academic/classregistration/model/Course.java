@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,16 +17,20 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private UUID id;
+    private long id;
 
     @NotBlank
     private String courseName;
 
     @NotBlank
+    @Column(unique = true)
     private String courseNumber;
 
     @ManyToMany(mappedBy="courses")
-    private Set<Student> students;
+    private Set<Student> students = new HashSet<>();
+
+    @ManyToOne
+    private Professor professor;
 
     Course() {
     }

@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,13 +16,13 @@ public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private UUID id;
+    private long id;
 
     @NotBlank
     private String name;
 
     @OneToMany
-    @JoinTable(name="professor_courses", joinColumns = @JoinColumn(name="professor_id"), inverseJoinColumns = @JoinColumn(name="course_id"))
+    //@JoinTable(name="professor_courses", joinColumns = @JoinColumn(name="professor_id"), inverseJoinColumns = @JoinColumn(name="course_id"))
     private Set<Course> courses = new HashSet<>();
 
     Professor(){

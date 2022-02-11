@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,7 +16,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private UUID id;
+    private long id;
 
     @NotEmpty
     private String name;
@@ -26,17 +25,10 @@ public class Student {
     @JoinTable(name="student_courses", joinColumns = @JoinColumn(name="student_id"), inverseJoinColumns = @JoinColumn(name="course_id"))
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "student")
-    private Set<CourseRegistration> registrations = new HashSet<>();
-
     Student(){
     }
 
     Student(String name){
         this.name = name;
-    }
-
-    public void registerCourse(Course course){
-        this.courses.add(course);
     }
 }
