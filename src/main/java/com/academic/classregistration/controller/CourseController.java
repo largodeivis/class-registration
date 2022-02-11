@@ -3,6 +3,7 @@ package com.academic.classregistration.controller;
 
 import com.academic.classregistration.exception.NonUniqueCourseNumberException;
 import com.academic.classregistration.model.Course;
+import com.academic.classregistration.model.ProfessorCourse;
 import com.academic.classregistration.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class CourseController {
     public ResponseEntity<Object> createCourse(@RequestBody Course course) {
         try {
             Course newCourse = courseService.createCourse(course);
-            return new ResponseEntity<>(newCourse, HttpStatus.OK);
+            return new ResponseEntity<>(newCourse, HttpStatus.CREATED);
         } catch (NonUniqueCourseNumberException exception) {
             logger.error(exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
@@ -43,6 +44,18 @@ public class CourseController {
         try {
             Course course = courseService.getCourse(id);
             return new ResponseEntity<>(course, HttpStatus.OK);
+        } catch (EntityNotFoundException exception){
+            logger.error(exception.getMessage());
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.OK);
+        }
+    }
+
+    @PatchMapping("courses/{id}")
+    public ResponseEntity<Object> assignProfessor(@PathVariable Long id, @RequestBody ProfessorCourse professor){
+        try {
+            Course course = courseService.getCourse(id);
+            Course updateCourse = courseService.assignProfessor(course, professor.getProfessorId());
+            return new ResponseEntity<>(updateCourse, HttpStatus.OK);
         } catch (EntityNotFoundException exception){
             logger.error(exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.OK);

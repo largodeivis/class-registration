@@ -3,6 +3,8 @@ package com.academic.classregistration.service;
 import com.academic.classregistration.exception.NonUniqueCourseNumberException;
 import com.academic.classregistration.jpa.CourseRepository;
 import com.academic.classregistration.model.Course;
+import com.academic.classregistration.model.Professor;
+import com.academic.classregistration.model.ProfessorCourse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import java.util.Optional;
 public class CourseService {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseService.class);
+
+    @Autowired
+    private ProfessorService professorService;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -57,5 +62,12 @@ public class CourseService {
 
     public Iterable<Course> getCourses(){
         return courseRepository.findAll();
+    }
+
+    public Course assignProfessor(Course course, Long professorId){
+        Professor professor = professorService.getProfessor(professorId);
+        course.setProfessor(professor);
+        courseRepository.save(course);
+        return course;
     }
 }

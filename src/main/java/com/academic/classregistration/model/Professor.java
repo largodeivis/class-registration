@@ -1,6 +1,7 @@
 package com.academic.classregistration.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name="professor")
+@NoArgsConstructor
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +22,6 @@ public class Professor {
 
     @NotBlank
     private String name;
-
-    @OneToMany
-    private Set<Course> courses = new HashSet<>();
-
-    Professor(){
-    }
 
     Professor(String name){
         this.name = name;

@@ -40,5 +40,4 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
-
 }
