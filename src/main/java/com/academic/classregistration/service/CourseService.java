@@ -34,18 +34,24 @@ public class CourseService {
     public Course getCourse(Long id){
         Optional<Course> course = courseRepository.findById(id);
         if (course.isPresent()){
+            logger.info("Retrieved course ID:" + id);
             return course.get();
         } else {
-            throw new EntityNotFoundException("Course with ID" + id +" not found.");
+            String errorString = "Course with ID" + id +" not found.";
+            logger.error(errorString);
+            throw new EntityNotFoundException(errorString);
         }
     }
 
     public Course getCourse(String courseNumber){
         Optional<Course> course = courseRepository.findByCourseNumber(courseNumber);
         if (course.isPresent()){
+            logger.info("Retrieved course with course Number:" + courseNumber);
             return course.get();
         } else {
-            throw new EntityNotFoundException("Course with Course Number:" + courseNumber +" not found.");
+            String errorString = "Course with Course Number:" + courseNumber +" not found.";
+            logger.error(errorString);
+            throw new EntityNotFoundException(errorString);
         }
     }
 

@@ -22,7 +22,6 @@ public class Professor {
     private String name;
 
     @OneToMany
-    //@JoinTable(name="professor_courses", joinColumns = @JoinColumn(name="professor_id"), inverseJoinColumns = @JoinColumn(name="course_id"))
     private Set<Course> courses = new HashSet<>();
 
     Professor(){
