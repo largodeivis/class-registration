@@ -2,9 +2,9 @@ package com.academic.classregistration.service;
 
 import com.academic.classregistration.jpa.StudentRepository;
 import com.academic.classregistration.model.Course;
-import com.academic.classregistration.model.Professor;
 import com.academic.classregistration.model.Student;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -54,18 +53,26 @@ public class StudentServiceTest {
         courseSet = null;
     }
 
+
+    @Test
+    void createStudentReturnsStudent(){
+        when(studentRepository.save(student1)).thenReturn(student1);
+        Student student = studentService.createStudent(student1);
+        Assertions.assertEquals(student1, student);
+    }
+
     @Test
     void getStudentReturnsStudent(){
         when(studentRepository.findById(1L)).thenReturn(Optional.of(student1));
         Student student = studentService.getStudent(1L);
-        assertEquals(student1, student);
+        Assertions.assertEquals(student1, student);
     }
 
     @Test
     void getStudentInvalidIdThrowsEntityNotFoundException(){
         long invalidId = 3;
         Exception thrown = assertThrows(EntityNotFoundException.class, () -> studentService.getStudent(invalidId));
-        assertEquals(thrown.getMessage(), "Student with ID: " + invalidId + " not found.");
+        Assertions.assertEquals(thrown.getMessage(), "Student with ID: " + invalidId + " not found.");
     }
 
     @Test
@@ -74,22 +81,23 @@ public class StudentServiceTest {
         Iterable<Student> students = studentService.getStudents();
         List<Student> iterableList = new ArrayList<>();
         students.forEach(iterableList::add);
-        assertEquals(studentList, iterableList);
+        Assertions.assertEquals(studentList, iterableList);
     }
 
     @Test
     void registerCourseToInvalidStudentIdThrowsEntityNotFoundException() {
         long id = 2;
         when(studentRepository.findById(id)).thenReturn(Optional.of(student2));
-        Student student = studentService.registerCourse(id, course1);
+        Assertions.assertTrue(student2.getCourses().isEmpty());
 
-        assertEquals(student.getCourses(), courseSet);
+        Student student = studentService.registerCourse(id, course1);
+        Assertions.assertEquals(student.getCourses(), courseSet);
     }
 
     @Test
     void registerCourseToStudentReturnsStudentWithCourse() {
         long invalidId = 3;
         Exception thrown = assertThrows(EntityNotFoundException.class, () -> studentService.registerCourse(invalidId, course1));
-        assertEquals(thrown.getMessage(), "Student with ID: " + invalidId + " not found.");
+        Assertions.assertEquals(thrown.getMessage(), "Student with ID: " + invalidId + " not found.");
     }
 }

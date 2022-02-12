@@ -44,6 +44,12 @@ public class Course implements Serializable {
         this.courseNumber = courseNumber;
     }
 
+    public Course(long id, String courseName, String courseNumber){
+        this.id = id;
+        this.courseName = courseName;
+        this.courseNumber = courseNumber;
+    }
+
     public void registerStudent(Student student){
         this.students.add(student);
     }

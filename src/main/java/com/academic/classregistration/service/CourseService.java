@@ -20,14 +20,16 @@ public class CourseService {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseService.class);
 
-    @Autowired
     private ProfessorService professorService;
-
-    @Autowired
     private StudentService studentService;
+    private CourseRepository courseRepository;
 
     @Autowired
-    private CourseRepository courseRepository;
+    CourseService(CourseRepository courseRepository, ProfessorService professorService, StudentService studentService){
+        this.courseRepository = courseRepository;
+        this.professorService = professorService;
+        this.studentService = studentService;
+    }
 
     public Course createCourse(Course course){
         try {

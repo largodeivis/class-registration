@@ -2,8 +2,8 @@ package com.academic.classregistration.service;
 
 import com.academic.classregistration.jpa.ProfessorRepository;
 import com.academic.classregistration.model.Professor;
-import com.academic.classregistration.model.Student;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,17 +47,24 @@ public class ProfessorServiceTest {
     }
 
     @Test
+    void createProfessorReturnsProfessor(){
+        when(professorRepository.save(professor1)).thenReturn(professor1);
+        Professor professor = professorService.createProfessor(professor1);
+        Assertions.assertEquals(professor1, professor);
+    }
+
+    @Test
     void getProfessorReturnsProfessor(){
         when(professorRepository.findById(1L)).thenReturn(Optional.of(professor1));
         Professor professor = professorService.getProfessor(1L);
-        assertEquals(professor1.getName(), professor.getName());
+        Assertions.assertEquals(professor1.getName(), professor.getName());
     }
 
     @Test
     void getProfessorInvalidIdThrowsEntityNotFoundException(){
         long invalidId = 3;
         Exception thrown = assertThrows(EntityNotFoundException.class, () -> professorService.getProfessor(invalidId));
-        assertEquals(thrown.getMessage(), "Professor with ID: " + invalidId + " not found.");
+        Assertions.assertEquals(thrown.getMessage(), "Professor with ID: " + invalidId + " not found.");
     }
 
     @Test
@@ -66,6 +73,6 @@ public class ProfessorServiceTest {
         Iterable<Professor> professors = professorService.getProfessors();
         List<Professor> iterableList = new ArrayList<>();
         professors.forEach(iterableList::add);
-        assertEquals(professorList, iterableList);
+        Assertions.assertEquals(professorList, iterableList);
     }
 }
