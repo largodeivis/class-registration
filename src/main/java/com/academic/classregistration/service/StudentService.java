@@ -1,6 +1,7 @@
 package com.academic.classregistration.service;
 
 import com.academic.classregistration.jpa.StudentRepository;
+import com.academic.classregistration.model.Course;
 import com.academic.classregistration.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,9 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+//    @Autowired
+//    private CourseService courseService;
 
     public Student createStudent(Student student){
         studentRepository.save(student);
@@ -38,4 +42,19 @@ public class StudentService {
     public Iterable<Student> getStudents() {
         return studentRepository.findAll();
     }
+
+    public Student registerStudentToCourse(Long studentId, Course course){
+        Student student = getStudent(studentId);
+        student.addCourse(course);
+        studentRepository.save(student);
+        return student;
+    }
+
+//    public Student registerStudentToCourse(Long studentId, Long courseId){
+//        Student student = getStudent(studentId);
+//        Course course = courseService.getCourse(courseId);
+//        student.addCourse(course);
+//        studentRepository.save(student);
+//        return student;
+//    }
 }

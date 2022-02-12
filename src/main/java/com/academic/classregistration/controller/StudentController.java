@@ -23,7 +23,9 @@ public class StudentController {
 
     @GetMapping("students")
     public ResponseEntity<Iterable<Student>> getStudents() {
-        return new ResponseEntity<>(studentService.getStudents(), HttpStatus.OK);
+        Iterable<Student> students = studentService.getStudents();
+        System.out.print(students);
+        return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     @GetMapping("students/{id}")

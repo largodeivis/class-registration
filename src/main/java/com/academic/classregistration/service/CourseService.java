@@ -4,6 +4,7 @@ import com.academic.classregistration.exception.NonUniqueCourseNumberException;
 import com.academic.classregistration.jpa.CourseRepository;
 import com.academic.classregistration.model.Course;
 import com.academic.classregistration.model.Professor;
+import com.academic.classregistration.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -21,6 +23,9 @@ public class CourseService {
 
     @Autowired
     private ProfessorService professorService;
+
+    @Autowired
+    private StudentService studentService;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -68,5 +73,53 @@ public class CourseService {
         course.setProfessor(professor);
         courseRepository.save(course);
         return course;
+    }
+
+    public Course assignProfessor(Long courseId, Long professorId){
+        Course course = getCourse(courseId);
+        Professor professor = professorService.getProfessor(professorId);
+        course.setProfessor(professor);
+        courseRepository.save(course);
+        return course;
+    }
+
+    public Course registerStudent(Course course, Student student){
+        course.registerStudent(student);
+        courseRepository.save(course);
+        return course;
+    }
+
+    public Course registerStudent(Course course, Long studentId){
+        Student student = studentService.getStudent(studentId);
+        course.registerStudent(student);
+        courseRepository.save(course);
+        return course;
+    }
+
+    public Course unregisterStudent(Course course, Long studentId){
+        Student student = studentService.getStudent(studentId);
+        Course updatedCourse = course.unregisterStudent(student);
+        return updatedCourse;
+    }
+
+    public Course studentCourseRegistration(Course course, Long studentId) throws EntityNotFoundException{
+        Course updatedCourse;
+        Student updatedStudent;
+        try {
+            updatedCourse = registerStudent(course, studentId);
+        } catch (EntityNotFoundException exception) {
+            String errorMessage = "Error while updating course ID: " + course.getId();
+            logger.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage);
+        }
+        try {
+            updatedStudent = studentService.registerStudentToCourse(studentId, course);
+        } catch(EntityNotFoundException exception) {
+            String errorMessage = "Error while updating student ID: " + studentId + ". Reverting changes to Course ID: " + updatedCourse.getId();
+            unregisterStudent(course, studentId);
+            logger.error(errorMessage);
+            throw new EntityNotFoundException(errorMessage);
+        }
+        return updatedCourse;
     }
 }

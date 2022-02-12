@@ -1,11 +1,14 @@
 package com.academic.classregistration.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +17,8 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Table(name="student")
-public class Student {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Student implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -29,5 +33,9 @@ public class Student {
 
     Student(String name){
         this.name = name;
+    }
+
+    public void addCourse(Course course){
+        this.courses.add(course);
     }
 }

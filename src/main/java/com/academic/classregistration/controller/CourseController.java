@@ -3,7 +3,6 @@ package com.academic.classregistration.controller;
 
 import com.academic.classregistration.exception.NonUniqueCourseNumberException;
 import com.academic.classregistration.model.Course;
-import com.academic.classregistration.model.ProfessorRequest;
 import com.academic.classregistration.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,14 +49,24 @@ public class CourseController {
         }
     }
 
-    @PatchMapping("courses/{id}/assign")
-    public ResponseEntity<Object> assignProfessor(@PathVariable Long id, @RequestBody ProfessorRequest professor){
+    @PostMapping("courses/{courseId}/assignProfessor/{professorId}")
+    public ResponseEntity<Object> assignProfessor(@PathVariable Long courseId, @PathVariable Long professorId){
         try {
-            Course course = courseService.getCourse(id);
-            Course updateCourse = courseService.assignProfessor(course, professor.getProfessorId());
-            return new ResponseEntity<>(updateCourse, HttpStatus.OK);
+            Course updatedCourse = courseService.assignProfessor(courseId, professorId);
+            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
         } catch (EntityNotFoundException exception){
             logger.error(exception.getMessage());
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("courses/{courseId}/registerStudent/{studentId}")
+    public ResponseEntity<Object> registerStudent(@PathVariable Long courseId, @PathVariable Long studentId) throws Exception {
+        try {
+            Course course = courseService.getCourse(courseId);
+            Course updatedCourse = courseService.studentCourseRegistration(course, studentId);
+            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+        } catch (EntityNotFoundException exception){
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.OK);
         }
     }

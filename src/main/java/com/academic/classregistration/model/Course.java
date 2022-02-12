@@ -1,18 +1,24 @@
 package com.academic.classregistration.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name="course")
-public class Course {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Course implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +38,6 @@ public class Course {
     @ManyToOne
     private Professor professor;
 
-    Course() {
-    }
-
     Course(String courseName, String courseNumber){
         this.courseName = courseName;
         this.courseNumber = courseNumber;
@@ -44,25 +47,10 @@ public class Course {
         this.students.add(student);
     }
 
-//    public void registerProfessor(Professor professor){
-//        this.professor = professor;
-//    }
-
-    public boolean unregisterStudent(Student student){
-        if (students.contains(student)) {
+    public Course unregisterStudent(Student student){
+        if (this.students.contains(student)) {
             this.students.remove(student);
-            return true;
-        } else {
-            return false;
         }
+        return this;
     }
-
-//    public void unregisterProfessor(Professor professor){
-//        this.professor = null;
-//    }
-
-
-
-
-
 }
