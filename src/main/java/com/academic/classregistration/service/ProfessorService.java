@@ -15,8 +15,12 @@ public class ProfessorService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProfessorService.class);
 
-    @Autowired
     private ProfessorRepository professorRepository;
+
+    @Autowired
+    ProfessorService(ProfessorRepository repository){
+        this.professorRepository = repository;
+    }
 
     public Professor createProfessor(Professor professor){
         professorRepository.save(professor);

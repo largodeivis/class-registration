@@ -15,8 +15,12 @@ import java.util.Optional;
 public class StudentService {
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
-    @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    StudentService(StudentRepository repository){
+        this.studentRepository = repository;
+    }
 
     public Student createStudent(Student student){
         studentRepository.save(student);

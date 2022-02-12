@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -38,7 +39,7 @@ public class Course implements Serializable {
     @ManyToOne
     private Professor professor;
 
-    Course(String courseName, String courseNumber){
+    public Course(String courseName, String courseNumber){
         this.courseName = courseName;
         this.courseNumber = courseNumber;
     }
@@ -52,5 +53,18 @@ public class Course implements Serializable {
             this.students.remove(student);
         }
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id == course.id && courseNumber.equals(course.courseNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, courseNumber);
     }
 }
