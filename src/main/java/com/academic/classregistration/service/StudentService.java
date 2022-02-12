@@ -18,9 +18,6 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-//    @Autowired
-//    private CourseService courseService;
-
     public Student createStudent(Student student){
         studentRepository.save(student);
         logger.info("Successfully saved student into DB: " + student);
@@ -43,18 +40,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student registerStudentToCourse(Long studentId, Course course){
+    public Student registerCourse(Long studentId, Course course){
         Student student = getStudent(studentId);
         student.addCourse(course);
         studentRepository.save(student);
         return student;
     }
-
-//    public Student registerStudentToCourse(Long studentId, Long courseId){
-//        Student student = getStudent(studentId);
-//        Course course = courseService.getCourse(courseId);
-//        student.addCourse(course);
-//        studentRepository.save(student);
-//        return student;
-//    }
 }

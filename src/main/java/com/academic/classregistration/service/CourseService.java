@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.List;
 
 @Service
 public class CourseService {
@@ -105,20 +104,19 @@ public class CourseService {
     public Course studentCourseRegistration(Course course, Long studentId) throws EntityNotFoundException{
         Course updatedCourse;
         Student updatedStudent;
+        String errorMessage = "Student ID: " + studentId + " not found. Unable to register to Course.";
         try {
             updatedCourse = registerStudent(course, studentId);
         } catch (EntityNotFoundException exception) {
-            String errorMessage = "Error while updating course ID: " + course.getId();
-            logger.error(errorMessage);
+            logger.error(exception.getMessage());
             throw new EntityNotFoundException(errorMessage);
         }
         try {
-            updatedStudent = studentService.registerStudentToCourse(studentId, course);
+            updatedStudent = studentService.registerCourse(studentId, course);
         } catch(EntityNotFoundException exception) {
-            String errorMessage = "Error while updating student ID: " + studentId + ". Reverting changes to Course ID: " + updatedCourse.getId();
             unregisterStudent(course, studentId);
-            logger.error(errorMessage);
-            throw new EntityNotFoundException(errorMessage);
+            logger.error(exception.getMessage());
+            throw new EntityNotFoundException(errorMessage + "\nReverting changes made to Course ID: " + updatedCourse.getId());
         }
         return updatedCourse;
     }
