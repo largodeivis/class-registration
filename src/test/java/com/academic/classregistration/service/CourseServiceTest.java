@@ -44,6 +44,7 @@ public class CourseServiceTest {
 
     Student student1 = new Student(1, "Daphne");
     Student student2 = new Student(2, "Velma");
+    Student student3 = new Student(3, "Shaggy");
 
     Professor professor = new Professor(1, "Scooby Doo");
 
@@ -61,10 +62,14 @@ public class CourseServiceTest {
         course1.registerStudent(student1);
         course1.registerStudent(student2);
         course2.registerStudent(student2);
+        student1.addCourse(course1);
+        student1.addCourse(course2);
+        student2.addCourse(course2);
         courseList.add(course1);
         courseList.add(course2);
         studentSet.add(student1);
         studentSet.add(student2);
+        studentSet.add(student3);
     }
 
     @AfterEach
@@ -76,6 +81,7 @@ public class CourseServiceTest {
         studentSet = null;
         student1 = null;
         student2 = null;
+        student3 = null;
         course1 = null;
         course2 = null;
         professor = null;
@@ -106,7 +112,7 @@ public class CourseServiceTest {
 
     @Test
     void getCourseInvalidIdThrowsEntityNotFoundException(){
-        long invalidId = 3;
+        long invalidId = 99;
         Exception thrown = assertThrows(EntityNotFoundException.class, () -> courseService.getCourse(invalidId));
         Assertions.assertEquals(thrown.getMessage(), "Course with ID: " + invalidId + " not found.");
     }
@@ -133,7 +139,7 @@ public class CourseServiceTest {
 
     @Test
     void assignProfessorInvalidIdThrowsException(){
-        long professorId = 5;
+        long professorId = 99;
         Exception thrown = assertThrows(EntityNotFoundException.class, () -> courseService.assignProfessor(course2, professorId));
         Assertions.assertEquals(thrown.getMessage(), "Professor with ID: " + professorId + " not found.");
     }
@@ -150,7 +156,7 @@ public class CourseServiceTest {
 
     @Test
     void registerStudentInvalidIdThrowsException(){
-        long studentId = 5;
+        long studentId = 99;
         Exception thrown = assertThrows(EntityNotFoundException.class, () -> courseService.registerStudent(course2, studentId));
         Assertions.assertEquals(thrown.getMessage(), "Student with ID: " + studentId + " not found.");
     }
@@ -160,18 +166,41 @@ public class CourseServiceTest {
         long studentId = 1;
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(student1));
         Assertions.assertTrue(course1.getStudents().contains(student1));
+        Assertions.assertTrue(student1.getCourses().contains(course1));
 
         Course course = courseService.unregisterStudent(course1, studentId);
         Assertions.assertFalse(course.getStudents().contains(student1));
         Assertions.assertTrue(course.getStudents().contains(student2));
-        Assertions.assertEquals(course, course1);
+
+        //main
+        Assertions.assertFalse(student1.getCourses().contains(course1));
+        Assertions.assertFalse(course.getStudents().contains(student1));
     }
 
     @Test
     void unregisterStudentInvalidIdThrowsException(){
-        long studentId = 5;
+        long studentId = 99;
         Exception thrown = assertThrows(EntityNotFoundException.class, () -> courseService.unregisterStudent(course1, studentId));
         Assertions.assertEquals(thrown.getMessage(), "Student with ID: " + studentId + " not found.");
     }
+
+    @Test
+    void studentCourseRegistrationReturnsCourse() throws Exception {
+        long studentId = 3;
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student3));
+
+        Course registeredCourse = courseService.studentCourseRegistration(course1, studentId);
+        Assertions.assertTrue(registeredCourse.getStudents().contains(student3));
+        Assertions.assertTrue(student3.getCourses().contains(course1));
+    }
+
+    @Test
+    void studentCourseRegistrationThrowsException() {
+        long studentId = 99;
+
+        Exception thrown = assertThrows(EntityNotFoundException.class, () -> courseService.studentCourseRegistration(course1, studentId));
+        Assertions.assertEquals("Student ID: " + studentId + " not found. Unable to register to Course.", thrown.getMessage());
+    }
+
 
 }

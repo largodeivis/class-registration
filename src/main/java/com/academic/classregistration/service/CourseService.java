@@ -53,18 +53,6 @@ public class CourseService {
         }
     }
 
-    public Course getCourse(String courseNumber){
-        Optional<Course> course = courseRepository.findByCourseNumber(courseNumber);
-        if (course.isPresent()){
-            logger.info("Retrieved course with Course Number:" + courseNumber);
-            return course.get();
-        } else {
-            String errorString = "Course with Course Number:" + courseNumber +" not found.";
-            logger.error(errorString);
-            throw new EntityNotFoundException(errorString);
-        }
-    }
-
     public Iterable<Course> getCourses(){
         return courseRepository.findAll();
     }
@@ -84,12 +72,6 @@ public class CourseService {
         return course;
     }
 
-    public Course registerStudent(Course course, Student student){
-        course.registerStudent(student);
-        courseRepository.save(course);
-        return course;
-    }
-
     public Course registerStudent(Course course, Long studentId){
         Student student = studentService.getStudent(studentId);
         course.registerStudent(student);
@@ -100,10 +82,11 @@ public class CourseService {
     public Course unregisterStudent(Course course, Long studentId){
         Student student = studentService.getStudent(studentId);
         Course updatedCourse = course.unregisterStudent(student);
+        studentService.unregisterCourse(student, course);
         return updatedCourse;
     }
 
-    public Course studentCourseRegistration(Course course, Long studentId) throws EntityNotFoundException{
+    public Course studentCourseRegistration(Course course, Long studentId) throws Exception {
         Course updatedCourse;
         Student updatedStudent;
         String errorMessage = "Student ID: " + studentId + " not found. Unable to register to Course.";
@@ -115,10 +98,10 @@ public class CourseService {
         }
         try {
             updatedStudent = studentService.registerCourse(studentId, course);
-        } catch(EntityNotFoundException exception) {
+        } catch(Exception exception) {
             unregisterStudent(course, studentId);
             logger.error(exception.getMessage());
-            throw new EntityNotFoundException(errorMessage + "\nReverting changes made to Course ID: " + updatedCourse.getId());
+            throw new Exception(errorMessage + "\nReverting changes made to Course ID: " + updatedCourse.getId());
         }
         return updatedCourse;
     }

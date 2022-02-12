@@ -50,4 +50,10 @@ public class StudentService {
         studentRepository.save(student);
         return student;
     }
+
+    public Student unregisterCourse(Student student, Course course){
+        student.removeCourse(course);
+        studentRepository.save(student);
+        return student;
+    }
 }

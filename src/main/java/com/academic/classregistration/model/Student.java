@@ -51,6 +51,12 @@ public class Student implements Serializable {
         this.courses.add(course);
     }
 
+    public void removeCourse(Course course){
+        if (this.getCourses().contains(course)){
+            this.courses.remove(course);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
