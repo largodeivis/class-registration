@@ -31,7 +31,7 @@ localhost:8080/students
 }
 ```
 
-![POST Students Image](img/POSTStudents.PNG)
+![POST Students Image](img/POSTStudents.png)
 
 
 ### Create Professor
@@ -49,7 +49,7 @@ localhost:8080/professors
 }
 ```
 
-![POST Professors Image](img/POSTProfessors.PNG)
+![POST Professors Image](img/POSTProfessors.png)
 
 ### Create Courses
 
@@ -67,7 +67,7 @@ localhost:8080/courses
 }
 ```
 
-![POST Courses Image](img/POSTCourses.PNG)
+![POST Courses Image](img/POSTCourses.png)
 
 
 ### Assign a Professor to a Course
@@ -78,11 +78,11 @@ _Post_ Request to _/courses/**{courseId}**/professor/**{professorId}**_.
 localhost:8080/courses/1/professor/1
 ```
 
-![POST Assign Professor Image](img/POSTAssignProfessor.PNG)
+![POST Assign Professor Image](img/POSTAssignProfessor.png)
 
 **Response**
 
-![Assign Professor Response Image](img/RESPONSEAssignProfessor.PNG)
+![Assign Professor Response Image](img/RESPONSEAssignProfessor.png)
 
 
 ### Register a Student to a Course
@@ -93,9 +93,9 @@ _Post_ Request to _/courses/**{courseId}**/student/**{studentId}**_.
 localhost:8080/courses/1/student/1
 ```
 
-![POST Register Student Image](img/POSTRegisterStudent.PNG)
+![POST Register Student Image](img/POSTRegisterStudent.png)
 
 **Response**
 
-![Register Student Response Image](img/RESPONSERegisterStudent.PNG)
+![Register Student Response Image](img/RESPONSERegisterStudent.png)
 
