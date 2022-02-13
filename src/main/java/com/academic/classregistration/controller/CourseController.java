@@ -49,7 +49,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping("courses/{courseId}/assignProfessor/{professorId}")
+    @PostMapping("courses/{courseId}/professor/{professorId}")
     public ResponseEntity<Object> assignProfessor(@PathVariable Long courseId, @PathVariable Long professorId){
         try {
             Course updatedCourse = courseService.assignProfessor(courseId, professorId);
@@ -60,7 +60,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping("courses/{courseId}/registerStudent/{studentId}")
+    @PostMapping("courses/{courseId}/student/{studentId}")
     public ResponseEntity<Object> registerStudent(@PathVariable Long courseId, @PathVariable Long studentId) throws Exception {
         try {
             Course course = courseService.getCourse(courseId);
