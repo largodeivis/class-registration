@@ -105,6 +105,7 @@ localhost:8080/courses/1/student/1
 
 ### Create Professors
 * **localhost:8080/professors**
+
 ```
 {
 totalRequests: 5996,
@@ -139,58 +140,55 @@ instanceIndex: 0
 
 
 ### Create Courses
-* A [bug](https://github.com/alexfernandez/loadtest/issues/198) in [loadtest](https://github.com/alexfernandez/loadtest) prevents me from firing off too many requests with unique parameters.
 * **localhost:8080/courses**
 
 ```
 {
-totalRequests: 250,
-totalErrors: 0,
-totalTimeSeconds: 1.2510715000000001,
-rps: 200,
-meanLatencyMs: 1039.2,
-maxLatencyMs: 1205,
-minLatencyMs: 873,
-percentiles: { '50': 1045, '90': 1155, '95': 1181, '99': 1202 },
-errorCodes: {},
-instanceIndex: 0
+  totalRequests: 1000,
+  totalErrors: 0,
+  totalTimeSeconds: 3.4538457,
+  rps: 290,
+  meanLatencyMs: 2522.3,
+  maxLatencyMs: 3376,
+  minLatencyMs: 1752,
+  percentiles: { '50': 2530, '90': 2963, '95': 3087, '99': 3226 },
+  errorCodes: {},
+  instanceIndex: 0
 }
 ```
 
 
 ### Assign Professor to Course
-* A [bug](https://github.com/alexfernandez/loadtest/issues/198) in [loadtest](https://github.com/alexfernandez/loadtest) prevents me from firing off too many requests with unique parameters.
 * **localhost:8080/courses/{course_id}/professor/{professor_id}**
 ```
 {
-totalRequests: 250,
-totalErrors: 0,
-totalTimeSeconds: 0.7444849,
-rps: 336,
-meanLatencyMs: 492.7,
-maxLatencyMs: 688,
-minLatencyMs: 245,
-percentiles: { '50': 506, '90': 653, '95': 679, '99': 686 },
-errorCodes: {},
-instanceIndex: 0
+  totalRequests: 1000,
+  totalErrors: 0,
+  totalTimeSeconds: 2.7105786,
+  rps: 369,
+  meanLatencyMs: 1790.6,
+  maxLatencyMs: 2685,
+  minLatencyMs: 970,
+  percentiles: { '50': 1779, '90': 2387, '95': 2469, '99': 2644 },
+  errorCodes: {},
+  instanceIndex: 0
 }
 ```
 
 ### Register Student to Course
-* A [bug](https://github.com/alexfernandez/loadtest/issues/198) in [loadtest](https://github.com/alexfernandez/loadtest) prevents me from firing off too many requests with unique parameters.
 * **localhost:8080/courses/{course_id}/student/{student_id}**
 ```
 {
-totalRequests: 250,
-totalErrors: 0,
-totalTimeSeconds: 0.7035143,
-rps: 355,
-meanLatencyMs: 439.4,
-maxLatencyMs: 650,
-minLatencyMs: 244,
-percentiles: { '50': 462, '90': 542, '95': 568, '99': 642 },
-errorCodes: {},
-instanceIndex: 0
+  totalRequests: 1000,
+  totalErrors: 0,
+  totalTimeSeconds: 2.5790951,
+  rps: 388,
+  meanLatencyMs: 1694.6,
+  maxLatencyMs: 2518,
+  minLatencyMs: 1083,
+  percentiles: { '50': 1670, '90': 2140, '95': 2280, '99': 2425 },
+  errorCodes: {},
+  instanceIndex: 0
 }
 ```
 
